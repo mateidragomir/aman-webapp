@@ -80,3 +80,42 @@
   overflow: hidden;
   background-color: #353535;
 }
+
+.order-entry-page {
+  position: relative;
+}
+
+.form-container {
+  overflow: hidden;
+  background-color: #9e9e9e;
+  position: fixed;
+  width: 100%;
+  height: 300px;
+}
+
+.order-entry-form {
+  overflow: hidden;
+  background-color: #9e9e9e;
+  position: fixed;
+  padding: 20px 20px;
+  width: 100%;
+  height: 300px;
+}
+
+.form-group {
+  float: left;
+  text-align: center;
+  color: #d6d6d6;
+  padding: 2px 2px;
+  margin: 12px 8px;
+  font-size: medium;
+}
+
+.table-container {
+  overflow: hidden;
+  position: absolute;
+  top: 350px;
+  padding: 20px 20px;
+  width: 100%;
+  height: 300px;
+}
