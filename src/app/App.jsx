@@ -24,9 +24,11 @@ class App extends React.Component {
                 <div className="main">
                     <Router history={this.history}>
                         <Switch>
-                            <Route>
-                                
-                                <OrderEntry exact path="/"/>
+                            <Route path="/login">
+                                <LoginPage/>
+                            </Route>
+                            <Route exact path="/">
+                                <OrderEntry/>
                             </Route>
                         </Switch>
                     </Router>

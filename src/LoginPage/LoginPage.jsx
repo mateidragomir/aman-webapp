@@ -1,4 +1,5 @@
 import React from "react";
+import { userAction } from '../actions'
 
 class LoginPage extends React.Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class LoginPage extends React.Component {
         this.setState({ submitted: true });
         const { username, password } = this.state;
         if (username && password) {
-            this.props.login(username, password);
+            userAction.login(username, password);
         }
     }
 
@@ -50,18 +51,13 @@ class LoginPage extends React.Component {
                         }
                     </div>
                     <div className="form-group">
-                        <button className="btn btn-primary">Login</button>
+                        <input type="submit" value="login" />
                     </div>
                 </form>
+                <button onClick={() => {userAction.logout()}}>Logout</button>
             </div>
         );
     }
 }
 
-// const actionCreators = {
-//     login: userActions.login,
-//     logout: userActions.logout
-// };
-
-// const connectedLogin = connect(actionCreators)(LoginPage);
 export {LoginPage};
