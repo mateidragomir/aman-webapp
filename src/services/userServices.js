@@ -1,8 +1,8 @@
-import { apiAction } from './fakeApiActions';
+import { apiAction } from './apiActions';
 
 const AUTH_ENPOINT = "auth";
 
-function login(username, password) {
+async function login(username, password) {
     const data = {
         qualified:  username,
         password:   password,
@@ -29,12 +29,11 @@ function login(username, password) {
         }
     };
 
-    apiAction.post(AUTH_ENPOINT, perform, data, callback);
-
+    await apiAction.post(AUTH_ENPOINT, perform, data, callback);
     return loginReq;
 }
 
-function logout() {
+async function logout() {
     const data = {
 
     };
@@ -55,8 +54,7 @@ function logout() {
         }
     }
 
-    apiAction.post(AUTH_ENPOINT, perform, data, callback);
-
+    await apiAction.post(AUTH_ENPOINT, perform, data, callback);
     return logoutReq;
 }
 

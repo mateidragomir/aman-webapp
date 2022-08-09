@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route, Link } from "react-router-dom";
 import { createBrowserHistory } from 'history';
 
 import '../App.css';
@@ -18,17 +18,27 @@ class App extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <div className="app">
 
                 <div className="main">
                     <Router history={this.history}>
+                        <div className="bla">
+                            <ul>
+                                <li>
+                                    <Link to="/">Order entry</Link>
+                                </li>
+                                <li>
+                                    <Link to="/login">login</Link>
+                                </li>
+                            </ul>
+                        </div>
                         <Switch>
                             <Route path="/login">
-                                <LoginPage/>
+                                <LoginPage />
                             </Route>
                             <Route exact path="/">
-                                <OrderEntry/>
+                                <OrderEntry />
                             </Route>
                         </Switch>
                     </Router>
