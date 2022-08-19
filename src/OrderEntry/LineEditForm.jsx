@@ -16,6 +16,7 @@ class LineEditForm extends React.Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+		this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.clearForm = this.clearForm.bind(this);
@@ -24,6 +25,13 @@ class LineEditForm extends React.Component {
     handleChange(e) {
         const { name, value } = e.target;
         this.setState({ [name]: value });
+    }
+
+	handleBlur(e) {
+        const { code } = this.state;
+        if ( code ) {
+            this.props.onCodeBlur(code);
+        }
     }
 
     handleSubmit(e) {
@@ -74,16 +82,19 @@ class LineEditForm extends React.Component {
         return (
             <div className="order-entry-form">
                 <form onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !qty ? '-has-error' : '')}>
+					<div className={'form-group' + (submitted && !qty ? '-has-error' : '') + (qty === '0' ? '-has-warning' : '')}>
                         <label htmlFor="qty">Qty</label>
                         <input type="number" className="form-control" name="qty" value={qty} onChange={this.handleChange} />
                         {submitted && !qty &&
                             <div className="help-block">Please enter quantity</div>
                         }
+                        {qty === '0' &&
+                            <div className="help-block">Warning: quantity 0</div>
+                        }
                     </div>
                     <div className={'form-group' + (submitted && !code ? '-has-error' : '')}>
                         <label htmlFor="code">Code</label>
-                        <input type="text" className="form-control" name="code" value={code} onChange={this.handleChange} />
+                        <input type="text" className="form-control" name="code" value={code} onChange={this.handleChange} onBlur={this.handleBlur}/>
                         {submitted && !code &&
                             <div className="help-block">Please enter item code</div>
                         }

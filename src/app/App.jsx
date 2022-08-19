@@ -1,29 +1,26 @@
-import React from "react";
-import { Router, Switch, Route, Link } from "react-router-dom";
+import React, { useState, useReducer } from "react";
+import { Router, Switch, Route } from "react-router-dom";
 import { createBrowserHistory } from 'history';
 
 import '../App.css';
 import { LoginPage } from '../LoginPage';
 import { OrderEntry } from '../OrderEntry';
+import { Topbar } from "../Topbar";
+import { Sidebar } from "../Sidebar";
 
+import { CombindAppContextProvider } from '../AppContextProvider';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.history = createBrowserHistory();
-        this.history.listen((location, action) => {
+function App() {
+    const [history] = useState(createBrowserHistory());
 
-        });
-
-    }
-
-    render() {
-        return (
-            <div className="app">
-
-                <div className="main">
-                    <Router history={this.history}>
-                        <div className="bla">
+    return (
+        <div className="app">
+            <CombindAppContextProvider>
+                <Router history={history}>
+                <Topbar/>
+                <Sidebar/>
+                    <div className="main">
+                        {/* <div className="bla">
                             <ul>
                                 <li>
                                     <Link to="/">Order entry</Link>
@@ -32,7 +29,7 @@ class App extends React.Component {
                                     <Link to="/login">login</Link>
                                 </li>
                             </ul>
-                        </div>
+                        </div> */}
                         <Switch>
                             <Route path="/login">
                                 <LoginPage />
@@ -41,11 +38,11 @@ class App extends React.Component {
                                 <OrderEntry />
                             </Route>
                         </Switch>
-                    </Router>
-                </div>
-            </div>
-        );
-    }
+                    </div>
+                </Router>
+            </CombindAppContextProvider>
+        </div>
+    );
 }
 
 export default App;

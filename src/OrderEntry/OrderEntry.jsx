@@ -3,6 +3,8 @@ import React from "react";
 import { ManualOrderEntryForm } from "./ManualOrderEntryForm";
 import { LineEditForm } from "./LineEditForm";
 import { EntryTable } from "./EntryTable";
+import { ItemPrev } from "./ItemPrev";
+import { AppContext } from "../AppContextProvider";
 
 class OrderEntry extends React.Component {
     constructor(props) {
@@ -13,13 +15,28 @@ class OrderEntry extends React.Component {
             orderNumber: 1,
             items: [{
             }],
+			showPrev: false,
+			itemPrevProps: {},
         }
 
+		this.checkItem = this.checkItem.bind(this);
         this.addEntry = this.addEntry.bind(this);
         this.editEntry = this.editEntry.bind(this);
         this.cancelEdit = this.cancelEdit.bind(this);
         this.editRow = this.editRow.bind(this);
     }
+
+	checkItem(code) {
+		this.context.itemCodeCheck(code, (req) => {
+			if (req.exist !== null) {
+				req.code = code;
+				this.setState({
+					showPrev: true,
+					itemPrevProps: req,
+				})
+			};
+		});
+	}
 
     addEntry(state) {
         const entry = new Entry();
@@ -29,6 +46,9 @@ class OrderEntry extends React.Component {
             orderNumber: this.state.orderNumber,
             tax: "GST", 
         });
+        this.context.addOrUpdateLine(entry, (req) => {
+			
+		});
         const items = this.state.items.concat(entry);
         this.setState({
             items: items,
@@ -43,6 +63,9 @@ class OrderEntry extends React.Component {
             orderNumber: this.state.orderNumber,
             tax: "GST", 
         });
+        this.context.addOrUpdateLine(entry, (req) => {
+
+		});
         const items = this.state.items;
         items.splice(this.state.editIndex, 1, entry);
         this.setState({
@@ -66,13 +89,14 @@ class OrderEntry extends React.Component {
 
     render() {
         const data = this.state.items;
-        const { isEditing, editIndex } = this.state;
+        const { isEditing, editIndex, showPrev, itemPrevProps } = this.state;
         const entry = this.state.items[editIndex];
         return (
             <div className="order-entry-page">
                 <div className="form-container">
-                    {isEditing ? <LineEditForm taxInt="5" entry={entry} onSubmit={this.editEntry} onCancel={this.cancelEdit}/> : <ManualOrderEntryForm taxInt="5" onSubmit={this.addEntry} />}
-                </div>
+                    {isEditing ? <LineEditForm taxInt="5" entry={entry} onSubmit={this.editEntry} onCodeBlur={this.checkItem} onCancel={this.cancelEdit}/> : <ManualOrderEntryForm taxInt="5" onSubmit={this.addEntry} onCodeBlur={this.checkItem}/>}
+					{showPrev && <ItemPrev data={itemPrevProps}/>}
+				</div>
                 <div className="table-container">
                     <EntryTable data={data} onRowClick={this.editRow}/>
                 </div>
@@ -80,6 +104,7 @@ class OrderEntry extends React.Component {
         );
     }
 }
+OrderEntry.contextType = AppContext.Actions;
 
 class Entry {
     constructor() {

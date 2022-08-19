@@ -1,17 +1,36 @@
 import { orderService } from '../services';
 
-function addOrUpdateLine({ orderLine }) {
-    const { orderNumber, line, code, control, description, hiddenDescription, discount, tax, rawAmountCents } = orderLine;
+function addOrUpdateLine( orderLine ) {
+    const { qty, orderNumber, line, code, control, description, hiddenDescription, discount, tax, rawAmountCents } = orderLine;
 
-    const addOrUpdateLineReq = Promise.resolve(orderService.addOrUpdateLine(orderNumber, line, code, control, description, hiddenDescription, discount, tax, rawAmountCents));
+    const addOrUpdateLineReq = Promise.resolve(orderService.addOrUpdateLine( qty, orderNumber, line, code, control, description, hiddenDescription, discount, tax, rawAmountCents));
 
-    addOrUpdateLine.then( value => {
-
+    addOrUpdateLineReq.then( value => {
+		let itemData;
+		if (value.wasSuccessful) {
+			itemData = value.data;
+		} else {
+			itemData = value.msg;
+		}
+		return itemData;
     });
+}
 
-    //TODO return somthing probably
+function itemCodeCheck( code, callback ) {
+    const itemCodeCheckReq = Promise.resolve(orderService.itemCodeCheck( code ));
+
+    itemCodeCheckReq.then( value => {
+		let itemData;
+		if (value.wasSuccessful) {
+			itemData = value.data;
+		} else {
+			itemData = value.msg;
+		}
+		callback(itemData);
+    });
 }
 
 export const orderAction = {
     addOrUpdateLine,
+    itemCodeCheck,
 }

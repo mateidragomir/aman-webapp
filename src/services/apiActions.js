@@ -2,15 +2,14 @@ import $ from "jquery";
 
 const API_URL = "http://localhost:8080/api/";
 
-async function post(endpoint, perform, data, callback) {
+function post(endpoint, perform, data, callback) {
     data.perform = perform;
-    await $.ajax({
+    $.ajax({
         type: 'POST',
         url: API_URL + endpoint,
         data: data,
         success: function(response) {
-            const parsedResponse = JSON.parse(response);
-            callback(parsedResponse);
+            callback(JSON.parse(response));
         },
         fail: function(response) {
 
@@ -18,18 +17,17 @@ async function post(endpoint, perform, data, callback) {
     });
 }
 
-async function get(endpoint, callback) {
-    await $.ajax({
+function get(endpoint, callback) {
+    $.ajax({
         type: 'GET',
         url: API_URL + endpoint,
         success: function(response) {
-            const parsedResponse = JSON.parse(response);
-            callback(parsedResponse);
+            callback(JSON.parse(response));
         },
         fail: function() {
 
         }
-    })
+    });
 }
 
 export const apiAction = {
